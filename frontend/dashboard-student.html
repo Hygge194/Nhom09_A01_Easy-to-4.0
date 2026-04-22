@@ -1,0 +1,144 @@
+<!-- Quản lý lịch hẹn của Học viên -->
+ <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Học Viên | Mentor App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <div class="max-w-6xl mx-auto px-4 py-10">
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-black text-blue-600">Bảng điều khiển</h1>
+                <p class="text-gray-500">Quản lý các buổi học và lịch hẹn của bạn</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="linkGoogleCalendar()" class="bg-indigo-100 text-indigo-700 px-5 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-indigo-200 transition shadow-sm border border-indigo-200">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg> Liên kết Calendar
+                </button>
+                <a href="mentors.html" class="bg-white px-5 py-2 rounded-xl shadow-sm font-semibold hover:bg-gray-100 border">Tìm Mentor</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-yellow-400">
+                <p class="text-gray-500 text-sm font-bold uppercase">Đang chờ duyệt</p>
+                <h2 id="pending-count" class="text-4xl font-black mt-2">0</h2>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-green-400">
+                <p class="text-gray-500 text-sm font-bold uppercase">Đã xác nhận</p>
+                <h2 id="confirmed-count" class="text-4xl font-black mt-2">0</h2>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-blue-400">
+                <p class="text-gray-500 text-sm font-bold uppercase">Tổng số buổi</p>
+                <h2 id="total-count" class="text-4xl font-black mt-2">0</h2>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-sm overflow-hidden border border-gray-100">
+            <div class="p-6 border-b border-gray-50 bg-gray-50/50">
+                <h3 class="font-bold text-lg">Lịch sử đặt lịch</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-gray-400 text-sm uppercase">
+                            <th class="px-6 py-4">Mentor</th>
+                            <th class="px-6 py-4">Gói học</th>
+                            <th class="px-6 py-4">Thời gian học</th>
+                            <th class="px-6 py-4 text-center">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="booking-list" class="divide-y divide-gray-50">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl transform transition-all scale-95">
+            <div class="text-center">
+                <img id="modal-mentor-avatar" src="" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-50 shadow-md object-cover">
+                <h3 id="modal-mentor-name" class="text-xl font-black mt-4 text-gray-800">Tên Mentor</h3>
+                <p class="text-blue-600 font-medium text-sm">Thông tin liên hệ đã xác thực</p>
+            </div>
+
+            <div class="mt-6 space-y-3">
+                <div class="flex items-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
+                    <span class="text-xl mr-3">📧</span>
+                    <div class="flex-1">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold">Email</p>
+                        <p id="modal-mentor-email" class="text-sm font-semibold text-gray-700">mentor@example.com</p>
+                    </div>
+                    <button onclick="copyToClipboard('modal-mentor-email')" class="text-blue-500 hover:text-blue-700 text-xs font-bold">Copy</button>
+                </div>
+                
+                <div class="flex items-center p-3 bg-gray-50 rounded-2xl border border-gray-100">
+                    <span class="text-xl mr-3">📞</span>
+                    <div class="flex-1">
+                        <p class="text-[10px] text-gray-400 uppercase font-bold">Số điện thoại</p>
+                        <p id="modal-mentor-phone" class="text-sm font-semibold text-gray-700">Chưa cập nhật</p>
+                    </div>
+                    <button onclick="copyToClipboard('modal-mentor-phone')" class="text-blue-500 hover:text-blue-700 text-xs font-bold">Copy</button>
+                </div>
+            </div>
+
+            <button onclick="closeContactModal()" class="w-full mt-6 py-3 bg-gray-800 text-white rounded-2xl font-bold hover:bg-black transition">
+                Đóng
+            </button>
+        </div>
+    </div>
+
+    <div id="review-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-black text-gray-800">Đánh giá buổi học</h3>
+                <p class="text-gray-500 text-sm mt-1">Trải nghiệm của bạn với Mentor thế nào?</p>
+            </div>
+
+            <div class="flex justify-center gap-2 mb-6" id="star-rating">
+                <span class="star cursor-pointer text-4xl text-gray-300 transition hover:scale-110" data-value="1">★</span>
+                <span class="star cursor-pointer text-4xl text-gray-300 transition hover:scale-110" data-value="2">★</span>
+                <span class="star cursor-pointer text-4xl text-gray-300 transition hover:scale-110" data-value="3">★</span>
+                <span class="star cursor-pointer text-4xl text-gray-300 transition hover:scale-110" data-value="4">★</span>
+                <span class="star cursor-pointer text-4xl text-gray-300 transition hover:scale-110" data-value="5">★</span>
+            </div>
+
+            <textarea id="review-comment" rows="4" 
+                class="w-full p-4 rounded-2xl bg-gray-50 border-none outline-none focus:ring-2 focus:ring-amber-400 text-gray-700 text-sm mb-4"
+                placeholder="Viết cảm nhận của bạn về Mentor..."></textarea>
+
+            <div class="flex gap-3">
+                <button onclick="closeReviewModal()" class="flex-1 py-3 bg-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-200 transition">Hủy</button>
+                <button onclick="submitReview()" class="flex-[2] py-3 bg-amber-400 text-white rounded-2xl font-black hover:bg-amber-500 shadow-lg transition uppercase">Gửi đánh giá</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="review-modal" class="hidden fixed inset-0 bg-black/50 items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-3xl w-96 shadow-2xl">
+            <h3 class="text-xl font-bold mb-4">Đánh giá Mentor</h3>
+            <div class="flex space-x-2 mb-4 justify-center">
+                <span class="star cursor-pointer text-3xl text-gray-300" data-value="1">★</span>
+                <span class="star cursor-pointer text-3xl text-gray-300" data-value="2">★</span>
+                <span class="star cursor-pointer text-3xl text-gray-300" data-value="3">★</span>
+                <span class="star cursor-pointer text-3xl text-gray-300" data-value="4">★</span>
+                <span class="star cursor-pointer text-3xl text-gray-300" data-value="5">★</span>
+            </div>
+            <textarea id="review-comment" class="w-full border p-3 rounded-xl mb-4" placeholder="Cảm nhận của bạn..."></textarea>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeReviewModal()" class="text-gray-500">Hủy</button>
+                <button onclick="submitReview()" class="bg-indigo-600 text-white px-6 py-2 rounded-xl font-bold">Gửi</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+    <script src="js/student-dashboard.js"></script>
+</body>
+</html>

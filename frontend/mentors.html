@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mentor Platform</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="css/mentors.css">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body >
+    <div class="min-h-screen flex">
+        <aside class="w-64 bg-white border-r hidden md:flex flex-col sticky top-0 h-screen">
+            <div>
+                <div class="p-6">
+                    <h1 class="text-xl font-extrabold text-indigo-600"> MENTORS</h1>
+                </div>
+                <nav class="mt-6 px-4">
+                    <a href="#" class="flex items-center p-3 bg-indigo-50 text-indigo-700 rounded-xl font-bold">
+                        <span class="mr-3"></span> DANH SÁCH CÁC MENTOR
+                    </a>
+                    <button onclick="window.location.href='dashboard-student.html'" class="w-full flex items-center p-3 text-slate-600 mt-4 hover:bg-slate-50 rounded-xl transition font-semibold">
+                        <span class="mr-3"></span> QUẢN LÝ LỊCH HỌC 
+                    </button>       
+                    <button onclick="logout()" class="w-full flex items-center p-3 text-red-500 mt-4 hover:bg-red-50 rounded-xl transition font-semibold">
+                        <span class="mr-3"></span> ĐĂNG XUẤT
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Bắt đầu: Section Profile Sidebar (Thêm vào cuối Sidebar) -->
+            <div class="mt-auto border-t border-slate-200 p-4 w-full block">
+                <a href="profile.html" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors group cursor-pointer w-full">
+                    <!-- Avatar -->
+                    <img 
+                        id="sidebar-user-avatar" 
+                        src="https://ui-avatars.com/api/?name=User&background=eff6ff&color=1d4ed8" 
+                        alt="User Avatar" 
+                        class="w-10 h-10 rounded-full object-cover border border-slate-200 group-hover:border-blue-400 group-hover:shadow-sm transition-all flex-shrink-0"
+                    >
+                    <!-- Tên người dùng -->
+                    <div class="flex flex-col overflow-hidden text-left">
+                        <span id="sidebar-user-name" class="font-bold text-sm text-slate-700 truncate group-hover:text-blue-600 transition-colors">
+                            Đang tải...
+                        </span>
+                        <span class="text-xs text-slate-500 group-hover:text-slate-600">Xem hồ sơ của bạn</span>
+                    </div>
+                </a>
+            </div>
+            <!-- Kết thúc: Section Profile Sidebar -->
+        </aside>
+
+        <main class="flex-1 p-6 md:p-10">
+
+            <div class="max-w-7xl mx-auto">
+
+                <div class="mb-8 relative max-w-md mx-auto md:mx-0">
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo tên hoặc khóa học..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow shadow-sm">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+
+                <div id="mentor-list" 
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    
+                    <p class="text-center text-slate-400 col-span-full">
+                         Đang tải dữ liệu giảng viên...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JS -->
+    <script src="js/auth.js"></script>
+    <script src="js/mentors.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedName = localStorage.getItem('userName') || 'Người dùng';
+            const storedAvatar = localStorage.getItem('userAvatar'); 
+            
+            const sidebarNameEl = document.getElementById('sidebar-user-name');
+            const sidebarAvatarEl = document.getElementById('sidebar-user-avatar');
+
+            if (sidebarNameEl) {
+                sidebarNameEl.textContent = storedName;
+            }
+            
+            if (sidebarAvatarEl) {
+                if (storedAvatar && storedAvatar !== 'null') {
+                    const avatarUrl = storedAvatar.startsWith('http') 
+                        ? storedAvatar 
+                        : `https://mentor-web-1.onrender.com${storedAvatar}`;
+                    sidebarAvatarEl.src = avatarUrl;
+                } else {
+                    sidebarAvatarEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(storedName)}&background=eff6ff&color=1d4ed8`;
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

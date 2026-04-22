@@ -1,0 +1,122 @@
+/* =========================
+   MENTOR CARD SYSTEM
+========================= */
+
+.mc {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mc:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* HEADER */
+.mc__head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+/* AVATAR */
+.mc__avatar-wrap {
+    position: relative;
+}
+
+.mc__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    object-fit: cover;
+    border: 2px solid #eef2ff;
+}
+
+.mc__dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border-radius: 999px;
+    border: 2px solid white;
+}
+
+/* META */
+.mc__name {
+    font-weight: 700;
+    font-size: 16px;
+    color: #0f172a;
+}
+
+.mc__badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: #4f46e5;
+    background: #eef2ff;
+    padding: 2px 6px;
+    border-radius: 999px;
+}
+
+/* BIO */
+.mc__bio {
+    font-size: 13px;
+    color: #475569;
+    margin: 10px 0 14px;
+    line-height: 1.4;
+}
+
+/* FOOTER */
+.mc__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* RATING */
+.mc__rating {
+    font-weight: 700;
+    color: #f59e0b;
+    font-size: 13px;
+}
+
+/* BUTTON */
+.mc__btn {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    background: #4f46e5;
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.mc__btn:hover {
+    background: #4338ca;
+}
+
+/* =========================
+   STATES
+========================= */
+
+.mc-state {
+    text-align: center;
+    padding: 40px;
+}
+
+.mc-state__icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.mc-state__text {
+    color: #64748b;
+}

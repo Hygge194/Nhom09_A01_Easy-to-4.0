@@ -1,0 +1,63 @@
+/* ===============================
+   LAYOUT (GIỮ NGUYÊN UI)
+=============================== */
+.container-main {
+  @apply max-w-6xl mx-auto px-4 py-10;
+}
+
+.header-main {
+  @apply flex justify-between items-center mb-10;
+}
+
+.title-main {
+  @apply text-3xl font-black text-blue-600;
+}
+
+.subtitle {
+  @apply text-gray-500;
+}
+
+/* ===============================
+   BUTTON (GIỮ NGUYÊN STYLE)
+=============================== */
+.btn-home {
+  @apply bg-white px-5 py-2 rounded-xl shadow-sm font-semibold hover:bg-gray-100 border;
+}
+
+/* ===============================
+   CARD STATS
+=============================== */
+.card-stat {
+  @apply bg-white p-6 rounded-3xl shadow-sm;
+}
+
+.stat-title {
+  @apply text-gray-500 text-sm font-bold uppercase;
+}
+
+.stat-number {
+  @apply text-4xl font-black mt-2;
+}
+
+/* ===============================
+   TABLE
+=============================== */
+.table-container {
+  @apply bg-white rounded-3xl shadow-sm overflow-hidden border border-gray-100;
+}
+
+.table-header-box {
+  @apply p-6 border-b border-gray-50 bg-gray-50/50;
+}
+
+.table-title {
+  @apply font-bold text-lg;
+}
+
+.table-head-row {
+  @apply text-gray-400 text-sm uppercase;
+}
+
+.table-cell {
+  @apply px-6 py-4;
+}
