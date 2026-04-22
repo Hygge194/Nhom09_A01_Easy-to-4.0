@@ -1,35 +1,39 @@
-# Mentor Platform
+# 🎓 Mentor Platform
 
-Mentor Platform là một nền tảng web ứng dụng kết nối giữa các sinh viên và những người hướng dẫn (Mentor) giàu kinh nghiệm. Dự án giúp sinh viên dễ dàng tìm kiếm, đặt lịch hẹn và nhận được sự tư vấn, hỗ trợ từ các Mentor.
+**Mentor Platform** là một nền tảng web kết nối trực tiếp giữa Học viên (Mentee) và những Người hướng dẫn (Mentor) giàu kinh nghiệm. Dự án cung cấp giải pháp toàn diện từ việc tìm kiếm Mentor, phân tích lịch rảnh thông minh bằng AI, đến đặt lịch, thanh toán trực tuyến và tự động tạo phòng họp qua Google Meet.
 
 ## Tính năng nổi bật
 
 ### Dành cho Sinh viên (Student)
-- **Tìm kiếm Mentor:** Xem danh sách Mentor, xem hồ sơ chi tiết và lĩnh vực chuyên môn của họ.
-- **Đặt lịch hẹn (Booking):** Lên lịch hẹn với Mentor theo thời gian rảnh.
-- **Đánh giá & Nhận xét:** Để lại đánh giá cho Mentor sau khi hoàn thành buổi hướng dẫn.
-- **Quản lý tài khoản:** Xem lịch sử đặt hẹn thông qua Dashboard.
+- **Tìm kiếm & Xem hồ sơ:** Dễ dàng tìm kiếm Mentor theo tên, kỹ năng hoặc môn học.
+- **Gợi ý lịch học bằng AI (Google Gemini):** Tự động phân tích lịch rảnh của cả 2 bên và gợi ý thời gian học tối ưu nhất.
+- **Đặt lịch & Thanh toán:** Hỗ trợ nhiều gói học (Beginner, Plus, Premium) và thanh toán an toàn qua cổng **VNPay**.
+- **Liên kết Google Calendar:** Tự động nhận thư mời và link **Google Meet** ngay khi Mentor xác nhận lịch.
+- **Đánh giá (Review):** Để lại số sao và nhận xét chi tiết sau mỗi buổi học.
 
 ### Dành cho Mentor
-- **Quản lý Hồ sơ:** Hiển thị thông tin cá nhân, kỹ năng.
-- **Quản lý Lịch hẹn:** Theo dõi các yêu cầu đặt lịch từ sinh viên.
-- **Xem đánh giá:** Xem các nhận xét từ sinh viên để cải thiện chất lượng hỗ trợ.
+- **Quản lý Hồ sơ chuyên môn:** Cập nhật tiểu sử, kỹ năng, kinh nghiệm và tùy chỉnh giá các gói dạy.
+- **Đồng bộ Lịch cá nhân:** Liên kết Google Calendar để tránh trùng lịch và tự động tạo phòng họp.
+- **Quản lý Yêu cầu Đặt lịch:** Duyệt, từ chối hoặc hoàn thành các buổi học ngay trên Dashboard.
+- **Thống kê Thu nhập:** Theo dõi tổng doanh thu dựa trên các buổi học đã được hoàn thành.
 
 ---
 
 ## Công nghệ sử dụng
 
 ### Frontend
-- Giao diện thuần tĩnh: **HTML5, CSS3, Vanilla JavaScript**.
-- Hỗ trợ đầy đủ các trang: `index.html` (Trang chủ), `login.html`, `register.html`, `mentors.html`, danh sách & chi tiết Mentor, Dashboard sinh viên và Mentor.
+- Giao diện: **HTML5, CSS3, Vanilla JavaScript**.
+- Styling: Sử dụng **Tailwind CSS** cho giao diện hiện đại, tối giản và hiển thị tốt trên mọi thiết bị (Responsive).
 
 ### Backend
 - Framework: **Node.js, Express.js**.
-- Xác thực & Bảo mật: **JWT (JSON Web Token), bcryptjs**.
+- Database: **MySQL** (Sử dụng thư viện `mysql2`).
+- Xác thực & Bảo mật: **JWT (JSON Web Token)** và mã hóa mật khẩu với **bcryptjs**.
 - Tải file: **Multer** (cho upload avatar, ảnh hồ sơ).
-- Cơ sở dữ liệu:
-  - **MySQL:** Lưu trữ dữ liệu chính (người dùng, hồ sơ, đặt lịch, đánh giá). Sử dụng `mysql2`.
-  - **ClickHouse:** (Tùy chọn) Lưu trữ log hoặc phân tích dữ liệu quy mô lớn (`@clickhouse/client`).
+- Tích hợp bên thứ 3 (3rd-party APIs):
+  - **Google Gemini AI 1.5 Pro:** Xử lý và phân tích dữ liệu lịch trình phức tạp.
+  - **Google APIs (OAuth2 & Calendar/Meet):** Cấp quyền và tạo sự kiện họp trực tuyến tự động.
+  - **VNPay:** Cổng thanh toán nội địa.
 
 ---
 
@@ -81,25 +85,39 @@ mentor-platform/
    ```
 
 3. Cấu hình biến môi trường:
-   Mở hoặc tạo file `.env` trong thư mục `backend` và điền các thông tin kết nối DB (Ví dụ mẫu):
+   Tạo file `.env` trong thư mục `backend` và cấu hình toàn bộ các biến sau:
    ```env
    PORT=5000
-
-   # Database MySQL Configuration (Thêm cấu hình phù hợp với máy của bạn)
-   PORT=5000
+   
+   # Database MySQL
    DB_HOST=localhost
    DB_USER=root
    DB_PASSWORD=
    DB_NAME=mentor_db
-   JWT_SECRET=
-   *(Lưu ý: Bạn cần tạo database MySQL có tên giống trong file `.env` và import schema nếu có trước khi chạy)*
+
+   # Security
+   JWT_SECRET=chuoi-bi-mat-cua-ban
+
+   # Google API (Dành cho Calendar & Meet)
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   GOOGLE_REDIRECT_URI=http://localhost:5000/api/calendar/oauth-callback
+
+   # Google Gemini AI
+   GEMINI_API_KEY=your_gemini_api_key
+
+   # VNPay Configuration
+   VNP_TMN_CODE=your_vnp_tmn_code
+   VNP_HASH_SECRET=your_vnp_hash_secret
+   VNP_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+   VNP_RETURN_URL=http://localhost:5500/dashboard-student.html
+   ```
+   *(Lưu ý: Sau khi tạo Database rỗng, bạn hãy chạy lệnh `node seed.js` để hệ thống tự động khởi tạo bảng và nạp dữ liệu mẫu)*
 
 4. Khởi chạy Server:
-   Dành cho môi trường phát triển (sẽ tự tải lại server khi code thay đổi):
    ```bash
    npm run dev
    ```
-   *Terminal sẽ hiện thông báo: "🚀 Server Backend đang chạy tại cổng http://localhost:5000"*
 
 ### 3. Thiết lập Frontend
 
@@ -130,6 +148,10 @@ Toàn bộ các API được điều hướng bắt đầu bằng `/api/`.
   - Tạo booking mới, lấy danh sách đặt lịch theo user/mentor, cập nhật trạng thái đặt lịch.
 - **Đánh giá (Reviews)** `[/api/reviews]`
   - Thêm đánh giá mới, lấy đánh giá của một mentor.
+- **Thanh toán (Payments)** `[/api/payments]`
+  - Tạo URL thanh toán VNPay, xử lý IPN và Return URL.
+- **Google Calendar** `[/api/calendar]`
+  - Ủy quyền OAuth2 và đồng bộ lịch.
 
 ---
 
